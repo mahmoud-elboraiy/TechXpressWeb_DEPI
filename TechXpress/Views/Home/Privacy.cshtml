@@ -1,0 +1,223 @@
+﻿
+@{
+    ViewData["Title"] = "Policies";
+}
+
+@section Styles {
+    <style>
+        .policy-section {
+            margin-bottom: 3rem;
+        }
+
+        .policy-nav {
+            position: sticky;
+            top: 80px;
+        }
+
+            .policy-nav .nav-link {
+                color: #495057;
+                border-left: 3px solid transparent;
+                padding: 0.5rem 1rem;
+            }
+
+                .policy-nav .nav-link.active {
+                    color: #0d6efd;
+                    border-left: 3px solid #0d6efd;
+                    background-color: #f8f9fa;
+                }
+
+                .policy-nav .nav-link:hover:not(.active) {
+                    background-color: #f8f9fa;
+                }
+
+        .last-updated {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+    </style>
+}
+
+<!-- Policies Header -->
+<section class="py-5 bg-light">
+    <div class="container text-center">
+        <h1 class="display-5 fw-bold">TechXpress Policies</h1>
+        <p class="lead">Review our terms and policies for using our services</p>
+        <p class="last-updated">Last updated: May 6, 2025</p>
+    </div>
+</section>
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Policy Navigation -->
+            <div class="col-lg-3">
+                <div class="policy-nav">
+                    <nav class="nav flex-column">
+                        <a class="nav-link active" href="#terms">Terms of Service</a>
+                        <a class="nav-link" href="#privacy">Privacy Policy</a>
+                        <a class="nav-link" href="#returns">Return Policy</a>
+                        <a class="nav-link" href="#shipping">Shipping Policy</a>
+                        <a class="nav-link" href="#cookies">Cookie Policy</a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Policy Content -->
+            <div class="col-lg-9">
+                <!-- Terms of Service -->
+                <div id="terms" class="policy-section">
+                    <h2 class="mb-4">Terms of Service</h2>
+                    <p>By accessing and using TechXpress, you accept and agree to be bound by these Terms of Service.</p>
+
+                    <h5 class="mt-4">1. Account Registration</h5>
+                    <p>You must provide accurate and complete information when creating an account. You are responsible for maintaining the confidentiality of your account credentials.</p>
+
+                    <h5 class="mt-4">2. Product Information</h5>
+                    <p>We strive for accuracy in product descriptions and pricing but cannot guarantee all information is error-free. We reserve the right to correct any errors.</p>
+
+                    <h5 class="mt-4">3. Prohibited Activities</h5>
+                    <p>You agree not to:</p>
+                    <ul>
+                        <li>Use our services for any illegal purpose</li>
+                        <li>Attempt to gain unauthorized access to our systems</li>
+                        <li>Interfere with the proper working of TechXpress</li>
+                        <li>Use any automated means to access our services</li>
+                    </ul>
+                </div>
+
+                <!-- Privacy Policy -->
+                <div id="privacy" class="policy-section">
+                    <h2 class="mb-4">Privacy Policy</h2>
+                    <p>This policy describes how we collect, use, and share your personal information.</p>
+
+                    <h5 class="mt-4">1. Information We Collect</h5>
+                    <p>We collect information you provide when you:</p>
+                    <ul>
+                        <li>Create an account</li>
+                        <li>Make a purchase</li>
+                        <li>Contact customer service</li>
+                        <li>Participate in promotions</li>
+                    </ul>
+
+                    <h5 class="mt-4">2. How We Use Information</h5>
+                    <p>We use your information to:</p>
+                    <ul>
+                        <li>Process transactions</li>
+                        <li>Provide customer support</li>
+                        <li>Improve our services</li>
+                        <li>Send marketing communications (with consent)</li>
+                    </ul>
+                </div>
+
+                <!-- Return Policy -->
+                <div id="returns" class="policy-section">
+                    <h2 class="mb-4">Return & Refund Policy</h2>
+                    <p>We want you to be completely satisfied with your purchase.</p>
+
+                    <h5 class="mt-4">1. Returns</h5>
+                    <p>Most unopened items in new condition can be returned within 30 days of delivery for a full refund. Some products have different policies (noted on product pages).</p>
+
+                    <h5 class="mt-4">2. Refunds</h5>
+                    <p>Refunds are processed within 5-10 business days after we receive your return. Original shipping charges are non-refundable.</p>
+
+                    <h5 class="mt-4">3. Exchanges</h5>
+                    <p>To exchange an item, please return the original item and place a new order.</p>
+                </div>
+
+                <!-- Shipping Policy -->
+                <div id="shipping" class="policy-section">
+                    <h2 class="mb-4">Shipping Policy</h2>
+                    <p>We offer several shipping options to meet your needs.</p>
+
+                    <h5 class="mt-4">1. Processing Time</h5>
+                    <p>Orders typically process within 1-2 business days. Processing may take longer during peak seasons.</p>
+
+                    <h5 class="mt-4">2. Shipping Methods</h5>
+                    <ul>
+                        <li><strong>Standard Shipping:</strong> 3-5 business days</li>
+                        <li><strong>Expedited Shipping:</strong> 2 business days</li>
+                        <li><strong>Same-Day Delivery:</strong> Available in select areas</li>
+                    </ul>
+
+                    <h5 class="mt-4">3. International Shipping</h5>
+                    <p>We ship to most countries worldwide. Additional fees (customs, taxes) may apply.</p>
+                </div>
+
+                <!-- Cookie Policy -->
+                <div id="cookies" class="policy-section">
+                    <h2 class="mb-4">Cookie Policy</h2>
+                    <p>We use cookies and similar technologies to enhance your experience.</p>
+
+                    <h5 class="mt-4">1. What Are Cookies?</h5>
+                    <p>Cookies are small text files stored on your device when you visit websites.</p>
+
+                    <h5 class="mt-4">2. How We Use Cookies</h5>
+                    <ul>
+                        <li>Essential cookies: Necessary for site functionality</li>
+                        <li>Performance cookies: Help us improve our website</li>
+                        <li>Advertising cookies: Deliver relevant ads</li>
+                    </ul>
+
+                    <h5 class="mt-4">3. Managing Cookies</h5>
+                    <p>You can control cookies through your browser settings. Disabling cookies may affect site functionality.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Main Policy Content Section (remains same) -->
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Sidebar nav -->
+           
+
+            <!-- Policy Sections -->
+            <div class="col-lg-9">
+                <!-- Your policy sections go here exactly as they are -->
+                <!-- Example for Terms of Service: -->
+                <div id="terms" class="policy-section">
+                    <h2 class="mb-4">Terms of Service</h2>
+                    <p>By accessing and using TechXpress, you accept and agree to be bound by these Terms of Service.</p>
+                    <!-- ... -->
+                </div>
+
+                <!-- Repeat for other sections like privacy, return, shipping, cookies -->
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        // Smooth scroll + active link update
+        document.querySelectorAll('.policy-nav .nav-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.policy-nav .nav-link').forEach(navLink => {
+                    navLink.classList.remove('active');
+                });
+                this.classList.add('active');
+                const target = document.querySelector(this.getAttribute('href'));
+                target.scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        window.addEventListener('scroll', function () {
+            const policySections = document.querySelectorAll('.policy-section');
+            const scrollPosition = window.scrollY;
+            policySections.forEach(section => {
+                const sectionTop = section.offsetTop - 150;
+                const sectionBottom = sectionTop + section.offsetHeight;
+                if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                    const id = section.getAttribute('id');
+                    document.querySelectorAll('.policy-nav .nav-link').forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${id}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

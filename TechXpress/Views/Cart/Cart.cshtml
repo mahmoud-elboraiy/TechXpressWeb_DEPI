@@ -1,0 +1,162 @@
+﻿@using DAL.Models
+
+ @model List<CartItem>
+
+@{
+    ViewData["Title"] = "Your Cart - TechXpress";
+
+    decimal subtotal = Model.Sum(item => item.Product.Price * item.Quantity);
+    decimal tax = subtotal * 0.08m;
+    decimal shipping = 0;
+    decimal total = subtotal + tax + shipping;
+}
+
+<section class="py-5">
+    <div class="container">
+        <h1 class="mb-4">Your Shopping Cart</h1>
+
+        <div class="row">
+            <!-- Cart Items -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+
+                        @foreach (var item in Model)
+                        {
+                            <div class="row align-items-center mb-4 cart-item">
+                                <div class="col-md-2">
+                                    <img src="@item.Product.Image ?? " https: //via.placeholder.com/100"" alt="Product" class="img-fluid">
+                                </div>
+                                <div class="col-md-5">
+                                    <h5 class="mb-1">@item.Product.ProductName</h5>
+                                    <p class="text-muted mb-1">
+                                        Category: @(item.Product.Category?.Name ?? "N/A")
+                                    </p>
+                                    <p class="text-success mb-0">In Stock: @item.Product.StockQuantity</p>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <button class="btn btn-outline-secondary quantity-btn decrease-btn">-</button>
+                                        <input type="text" class="form-control text-center quantity-input" value="@item.Quantity" readonly>
+                                        <button class="btn btn-outline-secondary quantity-btn increase-btn">+</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-2 text-end">
+                                    <h5 class="mb-0 item-price" data-unit-price="@item.Product.Price">$@(item.Product.Price * item.Quantity)</h5>
+                                    <button class="btn btn-link text-danger p-0"><small>Remove</small></button>
+                                </div>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <a asp-controller="Home" asp-action="Index" class="btn btn-outline-dark">
+                        <i class="fas fa-arrow-left me-2"></i>Continue Shopping
+                    </a>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">Order Summary</h5>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal</span>
+                            <span id="subtotal-amount">$@subtotal.ToString("0.00")</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Shipping</span>
+                            <span id="shipping-amount">$@shipping.ToString("0.00")</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Tax</span>
+                            <span id="tax-amount">$@tax.ToString("0.00")</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-3">
+                            <h5>Total</h5>
+                            <h5 id="total-amount">$@total.ToString("0.00")</h5>
+                        </div>
+                        <form asp-controller="Payment" asp-action="Pay" method="post">
+                            <button type="submit" class="btn btn-primary w-100 py-2">
+                                Proceed to Checkout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Styles {
+    <style>
+        .cart-item {
+            transition: all 0.3s;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const cartItems = document.querySelectorAll(".cart-item");
+
+            cartItems.forEach(function (item) {
+                const input = item.querySelector(".quantity-input");
+                const increaseBtn = item.querySelector(".increase-btn");
+                const decreaseBtn = item.querySelector(".decrease-btn");
+                const priceElement = item.querySelector(".item-price");
+
+                const unitPrice = parseFloat(priceElement.getAttribute("data-unit-price"));
+
+                function updatePrice(quantity) {
+                    const total = (unitPrice * quantity).toFixed(2);
+                    priceElement.textContent = `$${total}`;
+                    updateOrderSummary();
+                }
+
+                increaseBtn.addEventListener("click", () => {
+                    let quantity = parseInt(input.value);
+                    quantity++;
+                    input.value = quantity;
+                    updatePrice(quantity);
+                });
+
+                decreaseBtn.addEventListener("click", () => {
+                    let quantity = parseInt(input.value);
+                    if (quantity > 1) {
+                        quantity--;
+                        input.value = quantity;
+                        updatePrice(quantity);
+                    }
+                });
+            });
+
+            function updateOrderSummary() {
+                let subtotal = 0;
+                document.querySelectorAll(".cart-item").forEach(function (item) {
+                    const qty = parseInt(item.querySelector(".quantity-input").value);
+                    const unitPrice = parseFloat(item.querySelector(".item-price").getAttribute("data-unit-price"));
+                    subtotal += qty * unitPrice;
+                });
+
+                const shipping = 0;
+                const tax = subtotal * 0.08;
+                const total = subtotal + shipping + tax;
+
+                document.getElementById("subtotal-amount").textContent = `$${subtotal.toFixed(2)}`;
+                document.getElementById("tax-amount").textContent = `$${tax.toFixed(2)}`;
+                document.getElementById("shipping-amount").textContent = `$${shipping.toFixed(2)}`;
+                document.getElementById("total-amount").textContent = `$${total.toFixed(2)}`;
+            }
+        });
+    </script>
+}

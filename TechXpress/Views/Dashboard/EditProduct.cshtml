@@ -1,0 +1,241 @@
+@model DAL.Models.Product
+@{
+    ViewData["Title"] = Model.Id == 0 ? "Add New Product" : "Edit Product";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Dashboard" asp-action="AdminDash">
+                            <i class="fas fa-home"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" asp-controller="Dashboard" asp-action="ManageProduct">
+                            <i class="fas fa-box"></i> Products
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-controller="Dashboard" asp-action="ManageCategories">
+                            <i class="fas fa-tags"></i> Categories
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2">@(Model.Id == 0 ? "Add New Product" : "Edit Product")</h1>
+            </div>
+
+            <form id="productForm" class="needs-validation" novalidate>
+                <input type="hidden" id="productId" value="@Model.Id" />
+
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Basic Information</h5>
+                                <div class="mb-3">
+                                    <label for="productName" class="form-label">Product Name</label>
+                                    <input type="text" class="form-control" id="productName" value="@Model.ProductName" required>
+                                    <div class="invalid-feedback">Please enter a product name.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="description" class="form-label">Description</label>
+                                    <textarea class="form-control" id="description" rows="3" required>@Model.Description</textarea>
+                                    <div class="invalid-feedback">Please enter a description.</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="price" class="form-label">Price</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text">$</span>
+                                                <input type="number" class="form-control" id="price" value="@Model.Price" step="0.01" min="0.01" required>
+                                                <div class="invalid-feedback">Please enter a valid price.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="stockQuantity" class="form-label">Stock Quantity</label>
+                                            <input type="number" class="form-control" id="stockQuantity" value="@Model.StockQuantity" min="0" required>
+                                            <div class="invalid-feedback">Please enter stock quantity.</div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="categoryId" class="form-label">Category</label>
+                                    <select class="form-select" id="categoryId" required>
+                                        <option value="">Select a category</option>
+                                    </select>
+                                    <div class="invalid-feedback">Please select a category.</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Specifications Section -->
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Technical Specifications</h5>
+                                <div id="specificationsContainer">
+                                    @if (!string.IsNullOrEmpty(Model.Specifications))
+                                    {
+                                        var specs = System.Text.Json.JsonSerializer.Deserialize<List<Dictionary<string, string>>>(Model.Specifications);
+                                        foreach (var spec in specs)
+                                        {
+                                            <div class="row specification-row mb-2">
+                                                <div class="col">
+                                                    <input type="text" class="form-control spec-name" placeholder="Specification Name" value="@spec["name"]">
+                                                </div>
+                                                <div class="col">
+                                                    <input type="text" class="form-control spec-value" placeholder="Specification Value" value="@spec["value"]">
+                                                </div>
+                                                <div class="col-auto">
+                                                    <button type="button" class="btn btn-danger remove-specification">Remove</button>
+                                                </div>
+                                            </div>
+                                        }
+                                    }
+                                </div>
+                                <button type="button" id="addSpecification" class="btn btn-secondary mt-2">Add Specification</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Product Image</h5>
+                                <div class="mb-3">
+                                    <label for="image" class="form-label">Image URL</label>
+                                    <input type="text" class="form-control" id="image" value="@(Model.Image ?? "/images/no-image.png")" required>
+                                    <div class="invalid-feedback">Please enter an image URL.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <img id="imagePreview" src="@(Model.Image ?? "/images/no-image.png")" class="img-fluid rounded" alt="Product Image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button type="button" class="btn btn-secondary me-md-2" onclick="window.location.href='@Url.Action("ManageProduct", "Dashboard")'">Cancel</button>
+                    <button type="submit" class="btn btn-primary">@(Model.Id == 0 ? "Add Product" : "Update Product")</button>
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Load categories
+            $.get('@Url.Action("GetCategories")', function(categories) {
+                var select = $('#categoryId');
+                categories.forEach(function(category) {
+                    select.append($('<option></option>')
+                        .val(category.id)
+                        .text(category.name));
+                });
+            });
+
+            // Handle form submission
+            $('#productForm').on('submit', function(e) {
+                e.preventDefault();
+
+                // Collect specifications
+                var specifications = [];
+                $('.specification-row').each(function() {
+                    var name = $(this).find('.spec-name').val();
+                    var value = $(this).find('.spec-value').val();
+                    if (name && value) {
+                        specifications.push({
+                            name: name.trim(),
+                            value: value.trim()
+                        });
+                    }
+                });
+
+                // Send AJAX request
+                $.ajax({
+                    url: $('#productId').val() ? '@Url.Action("UpdateProduct")' : '@Url.Action("CreateProduct")',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        id: $('#productId').val() ? parseInt($('#productId').val()) : 0,
+                        productName: $('#productName').val().trim(),
+                        description: $('#description').val().trim(),
+                        price: parseFloat($('#price').val()),
+                        stockQuantity: parseInt($('#stockQuantity').val()),
+                        categoryId: parseInt($('#categoryId').val()),
+                        image: $('#image').val() || '/images/no-image.png',
+                        specifications: JSON.stringify(specifications) // Convert specifications to JSON string
+                    }),
+                    success: function(response) {
+                        console.log('Server response:', response);
+                        if (response.success) {
+                            alert($('#productId').val() ? 'Product updated successfully!' : 'Product created successfully!');
+                            window.location.href = '@Url.Action("ManageProduct")';
+                        } else {
+                            var errorMessage = 'Error: ' + response.message;
+                            if (response.errors) {
+                                errorMessage += '\n\nValidation Errors:\n' + response.errors.join('\n');
+                            }
+                            if (response.error) {
+                                errorMessage += '\n\nError Details:\n' + response.error;
+                            }
+                            alert(errorMessage);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error response:', xhr.responseJSON);
+                        var errorMessage = 'Error creating product: ' + error;
+                        if (xhr.responseJSON) {
+                            if (xhr.responseJSON.errors) {
+                                errorMessage += '\n\nValidation Errors:\n' + xhr.responseJSON.errors.join('\n');
+                            }
+                            if (xhr.responseJSON.error) {
+                                errorMessage += '\n\nError Details:\n' + xhr.responseJSON.error;
+                            }
+                        }
+                        alert(errorMessage);
+                    }
+                });
+            });
+
+            // Add specification row
+            $('#addSpecification').click(function() {
+                var newRow = `
+                    <div class="row specification-row mb-2">
+                        <div class="col">
+                            <input type="text" class="form-control spec-name" placeholder="Specification Name">
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control spec-value" placeholder="Specification Value">
+                        </div>
+                        <div class="col-auto">
+                            <button type="button" class="btn btn-danger remove-specification">Remove</button>
+                        </div>
+                    </div>
+                `;
+                $('#specificationsContainer').append(newRow);
+            });
+
+            // Remove specification row
+            $(document).on('click', '.remove-specification', function() {
+                $(this).closest('.specification-row').remove();
+            });
+        });
+    </script>
+} 

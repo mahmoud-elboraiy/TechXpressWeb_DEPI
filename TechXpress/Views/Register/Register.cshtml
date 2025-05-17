@@ -1,0 +1,117 @@
+﻿
+@{
+    ViewData["Title"] = "Register";
+
+}
+
+@section Styles {
+    <style>
+        .auth-container {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            background: white;
+        }
+
+        .auth-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .auth-footer {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .password-strength {
+            height: 5px;
+            margin-top: 5px;
+            background: #e9ecef;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .password-strength-bar {
+            height: 100%;
+            width: 0%;
+            background: #dc3545;
+            transition: all 0.3s;
+        }
+    </style>
+}
+
+<section class="py-5">
+    <div class="container">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h2>Create Account</h2>
+                <p class="text-muted">Join TechXpress today</p>
+            </div>
+
+            <form>
+                <div class="row g-3 mb-3">
+                    <div class="col-md-6">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control" id="firstName" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control" id="lastName" required>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="registerEmail" class="form-label">Email address</label>
+                    <input type="email" class="form-control" id="registerEmail" required>
+                </div>
+                <div class="mb-3">
+                    <label for="registerPassword" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="registerPassword" required>
+                    <div class="password-strength">
+                        <div class="password-strength-bar" id="passwordStrength"></div>
+                    </div>
+                    <div class="form-text">Must be at least 8 characters</div>
+                </div>
+                <div class="mb-3">
+                    <label for="confirmPassword" class="form-label">Confirm Password</label>
+                    <input type="password" class="form-control" id="confirmPassword" required>
+                </div>
+                <div class="mb-3 form-check">
+                    <input type="checkbox" class="form-check-input" id="agreeTerms" required>
+                    <label class="form-check-label" for="agreeTerms">
+                        I agree to the <a asp-page="/Terms">Terms of Service</a> and <a asp-page="/Privacy">Privacy Policy</a>
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary w-100 py-2">Create Account</button>
+            </form>
+
+            <div class="auth-footer">
+                <p class="text-muted">
+                    Already have an account?
+                    <a asp-controller="Login" asp-action="Login" class="text-primary text-decoration-underline">Login</a>
+                </p>
+
+
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        document.getElementById('registerPassword').addEventListener('input', function () {
+            const strengthBar = document.getElementById('passwordStrength');
+            const strength = Math.min(this.value.length / 8 * 100, 100);
+            strengthBar.style.width = strength + '%';
+
+            if (strength < 30) {
+                strengthBar.style.backgroundColor = '#dc3545';
+            } else if (strength < 70) {
+                strengthBar.style.backgroundColor = '#ffc107';
+            } else {
+                strengthBar.style.backgroundColor = '#28a745';
+            }
+        });
+    </script>
+}

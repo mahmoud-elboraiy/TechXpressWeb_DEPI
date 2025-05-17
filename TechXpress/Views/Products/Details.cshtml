@@ -1,0 +1,126 @@
+@model DAL.Models.Product
+@{
+    ViewData["Title"] = Model.ProductName;
+}
+
+<div class="container py-5">
+    <div class="row">
+        <!-- Product Image -->
+        <div class="col-md-6">
+            <img src="@Model.Image" class="img-fluid rounded" alt="@Model.ProductName">
+        </div>
+
+        <!-- Product Details -->
+        <div class="col-md-6">
+            <h1 class="mb-3">@Model.ProductName</h1>
+            <p class="text-muted mb-4">@Model.Description</p>
+            
+            <div class="mb-4">
+                <h3 class="text-primary">$@Model.Price.ToString("F2")</h3>
+                <p class="text-@(Model.StockQuantity > 0 ? "success" : "danger")">
+                    @(Model.StockQuantity > 0 ? "In Stock" : "Out of Stock")
+                </p>
+            </div>
+
+            @if (Model.StockQuantity > 0)
+            {
+                <div class="mb-4">
+                    <div class="input-group" style="max-width: 200px;">
+                        <button class="btn btn-outline-secondary" type="button" onclick="decrementQuantity()">-</button>
+                        <input type="number" class="form-control text-center" id="quantity" value="1" min="1" max="@Model.StockQuantity">
+                        <button class="btn btn-outline-secondary" type="button" onclick="incrementQuantity()">+</button>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary btn-lg mb-4" onclick="addToCart()">
+                    Add to Cart
+                </button>
+            }
+
+            <!-- Specifications -->
+            @if (!string.IsNullOrEmpty(Model.Specifications))
+            {
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0">Technical Specifications</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <tbody>
+                                @{
+                                    var specs = System.Text.Json.JsonSerializer.Deserialize<List<Dictionary<string, string>>>(Model.Specifications);
+                                    foreach (var spec in specs)
+                                    {
+                                        <tr>
+                                            <th>@spec["name"]</th>
+                                            <td>@spec["value"]</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            }
+
+            <!-- Reviews -->
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">Customer Reviews</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.Reviews != null && Model.Reviews.Any())
+                    {
+                        foreach (var review in Model.Reviews)
+                        {
+                            <div class="mb-3">
+                                <div class="d-flex justify-content-between">
+                                    <h6 class="mb-1">@review.User.UserName</h6>
+                                    <small class="text-muted">@review.CreatedAt.ToString("MMM dd, yyyy")</small>
+                                </div>
+                                <div class="mb-1">
+                                    @for (int i = 1; i <= 5; i++)
+                                    {
+                                        <i class="fas fa-star @(i <= review.Rating ? "text-warning" : "text-muted")"></i>
+                                    }
+                                </div>
+                                <p class="mb-0">@review.Comment</p>
+                            </div>
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-muted">No reviews yet.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function incrementQuantity() {
+            var input = document.getElementById('quantity');
+            var value = parseInt(input.value);
+            var max = parseInt(input.max);
+            if (value < max) {
+                input.value = value + 1;
+            }
+        }
+
+        function decrementQuantity() {
+            var input = document.getElementById('quantity');
+            var value = parseInt(input.value);
+            if (value > 1) {
+                input.value = value - 1;
+            }
+        }
+
+        function addToCart() {
+            var quantity = document.getElementById('quantity').value;
+            // Add to cart logic here
+            alert('Product added to cart!');
+        }
+    </script>
+} 

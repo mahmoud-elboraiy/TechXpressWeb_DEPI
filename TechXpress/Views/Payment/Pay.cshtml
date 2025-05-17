@@ -1,0 +1,154 @@
+﻿
+@{
+    ViewData["Title"] = "Payment";
+    
+}
+
+<section class="py-5">
+    <div class="container">
+        <div class="row">
+            <!-- Payment Form -->
+            <div class="col-lg-8">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h2 class="mb-4">Payment Information</h2>
+
+                        <!-- Payment Methods -->
+                        <div class="mb-4">
+                            <h5 class="mb-3">Payment Method</h5>
+                            <div class="list-group">
+                                <div class="list-group-item payment-method active">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="creditCard" checked>
+                                        <label class="form-check-label" for="creditCard">
+                                            <i class="far fa-credit-card me-2"></i> Credit Card
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="list-group-item payment-method">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="paymentMethod" id="paypal">
+                                        <label class="form-check-label" for="paypal">
+                                            <i class="fab fa-paypal me-2"></i> PayPal
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Card Form -->
+                        <div id="creditCardForm">
+                            <h5 class="mb-3">Card Details</h5>
+                            <div class="row g-3">
+                                <div class="col-md-12 card-number-group">
+                                    <label for="cardNumber" class="form-label">Card Number</label>
+                                    <input type="text" class="form-control" id="cardNumber" placeholder="1234 5678 9012 3456">
+                                    <i class="fab fa-cc-visa card-icon text-primary"></i>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="cardName" class="form-label">Name on Card</label>
+                                    <input type="text" class="form-control" id="cardName" placeholder="John Doe">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="cardExpiry" class="form-label">Expiry Date</label>
+                                    <input type="text" class="form-control" id="cardExpiry" placeholder="MM/YY">
+                                </div>
+                                <div class="col-md-3">
+                                    <label for="cardCvc" class="form-label">CVC</label>
+                                    <input type="text" class="form-control" id="cardCvc" placeholder="123">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Billing Address -->
+                        <div class="mt-4">
+                            <h5 class="mb-3">Billing Address</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label for="firstName" class="form-label">First Name</label>
+                                    <input type="text" class="form-control" id="firstName" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="lastName" class="form-label">Last Name</label>
+                                    <input type="text" class="form-control" id="lastName" required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="address" class="form-label">Address</label>
+                                    <input type="text" class="form-control" id="address" required>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="country" class="form-label">Country</label>
+                                    <select class="form-select" id="country" required>
+                                        <option value="">Choose...</option>
+                                        <option>United States</option>
+                                        <option>United Kingdom</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="state" class="form-label">State</label>
+                                    <select class="form-select" id="state" required>
+                                        <option value="">Choose...</option>
+                                        <option>California</option>
+                                        <option>New York</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-4">
+                                    <label for="zip" class="form-label">Zip</label>
+                                    <input type="text" class="form-control" id="zip" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">Order Summary</h5>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Subtotal (2 items)</span>
+                            <span>$1,048.00</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Shipping</span>
+                            <span>$0.00</span>
+                        </div>
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>Tax</span>
+                            <span>$83.84</span>
+                        </div>
+                        <hr>
+                        <div class="d-flex justify-content-between mb-4">
+                            <h5>Total</h5>
+                            <h5>$1,131.84</h5>
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                            <label class="form-check-label" for="termsCheck">
+                                I agree to the <a href="#">Terms & Conditions</a>
+                            </label>
+                        </div>
+                        <button class="btn btn-primary w-100 py-2">
+                            <i class="fas fa-lock me-2"></i> Place Order
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        document.querySelectorAll('.payment-method').forEach(item => {
+            item.addEventListener('click', function () {
+                document.querySelectorAll('.payment-method').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+                const input = this.querySelector('input');
+                input.checked = true;
+            });
+        });
+    </script>
+}

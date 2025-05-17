@@ -1,0 +1,461 @@
+﻿@* @using DAL.Models
+@model List<Product>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+@section Styles {
+    <style>
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1518770660439-4636190af475');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+        }
+
+        .product-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-radius: 1rem;
+        }
+
+            .product-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .product-card img {
+                max-height: 180px;
+                object-fit: contain;
+                padding: 1rem;
+                background-color: #f8f9fa;
+                border-top-left-radius: 1rem;
+                border-top-right-radius: 1rem;
+            }
+
+        .card-title {
+            font-size: 1.1rem;
+        }
+
+        .card-text {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        .card-footer {
+            background-color: #fff;
+            border-top: none;
+        }
+
+        .fa-star {
+            font-size: 0.9rem;
+        }
+
+        .text-truncate {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    </style>
+}
+
+<section class="py-5">
+    <div class="container">
+        <h1 class="mb-4">Our Products</h1>
+
+        <div class="row">
+            <div class="col-lg-3 mb-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Categories</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><a href="#" class="text-decoration-none category-active" data-category="all">All Products</a></li>
+                            <li class="list-group-item"><a href="#" class="text-decoration-none" data-category="smartphones">Smartphones</a></li>
+                            <li class="list-group-item"><a href="#" class="text-decoration-none" data-category="laptops">Laptops</a></li>
+                            <li class="list-group-item"><a href="#" class="text-decoration-none" data-category="tablets">Tablets</a></li>
+                            <li class="list-group-item"><a href="#" class="text-decoration-none" data-category="accessories">Accessories</a></li>
+                            <li class="list-group-item"><a href="#" class="text-decoration-none" data-category="wearables">Wearables</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                 <div class="card mt-4">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0">Filters</h5>
+                    </div>
+                    <div class="card-body">
+                        <h6>Price Range</h6>
+                        <div class="mb-3">
+                            <input type="range" class="form-range" id="priceRange" min="0" max="2000" step="100">
+                            <div class="d-flex justify-content-between">
+                                <span>$0</span>
+                                <span id="priceValue">$1000</span>
+                                <span>$2000</span>
+                            </div>
+                        </div>
+
+                        <h6>Brand</h6>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" id="apple"><label class="form-check-label" for="apple">Apple</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" id="samsung"><label class="form-check-label" for="samsung">Samsung</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" id="google"><label class="form-check-label" for="google">Google</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" id="dell"><label class="form-check-label" for="dell">Dell</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" id="lenovo"><label class="form-check-label" for="lenovo">Lenovo</label></div>
+                    </div>
+                </div>
+                <div class="card mt-4">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0">Filters</h5>
+                    </div>
+                    <div class="card-body">
+                        <h6>Price Range</h6>
+                        <div class="mb-3">
+                            <input type="range" class="form-range" id="priceRange" min="0" max="2000" step="100">
+                            <div class="d-flex justify-content-between">
+                                <span>$0</span>
+                                <span id="priceValue">$1000</span>
+                                <span>$2000</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-9">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <p class="mb-0"><span id="productCount">@Model.Count</span> products found</p>
+                    <div class="d-flex align-items-center">
+                        <label class="me-2">Sort by:</label>
+                        <select class="form-select form-select-sm" style="width: auto;" onchange="sortProducts(this.value)">
+                            <option value="">Featured</option>
+                            <option value="priceLowToHigh">Price: Low to High</option>
+                            <option value="priceHighToLow">Price: High to Low</option>
+                            <option value="rating">Customer Rating</option>
+                            <option value="newest">Newest First</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    @foreach (var product in Model)
+                    {
+                        <div class="col-lg-3 col-md-4 col-sm-6 mb-4">
+                            <div class="card product-card shadow-sm border-0 rounded-4 h-100">
+                                <a asp-controller="Products" asp-action="ProductDetails" asp-route-id="@product.Id" class="text-decoration-none text-dark d-flex flex-column h-100">
+                                    <img src="@Url.Content($"~/{product.Image}")" class="card-img-top" alt="@product.ProductName" />
+
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="card-title fw-semibold text-truncate">@product.ProductName</h5>
+                                        <p class="card-text">@product.Description</p>
+
+                                    </div>
+                                </a>
+
+                                <div class="card-footer bg-white border-top-0 d-flex justify-content-between align-items-center px-3 pb-3 pt-2">
+                                    <span class="fw-bold text-success fs-6">$@product.Price</span>
+                                    <form asp-controller="Cart" asp-action="AddToCart" method="post" class="m-0">
+                                        <input type="hidden" name="productId" value="@product.Id" />
+                                        <button type="submit" class="btn btn-sm btn-primary px-3">
+                                            <i class="fas fa-cart-plus me-1"></i> Add
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <nav class="mt-5">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    function sortProducts(sortOrder) {
+        window.location.href = '?sortOrder=' + sortOrder;
+    }
+
+    const range = document.getElementById("priceRange");
+    const valueLabel = document.getElementById("priceValue");
+
+    if (range && valueLabel) {
+        range.addEventListener("input", function () {
+            valueLabel.textContent = "$" + range.value;
+        });
+    }
+</script>
+ *@
+ @using DAL.Models
+@model List<Product>
+
+@{
+    ViewData["Title"] = "Products";
+    var categories = Model.Select(p => p.Category).Where(c => c != null).Distinct().ToList();
+}
+
+@section Styles {
+    <style>
+        .hero-section {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1518770660439-4636190af475');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 0;
+        }
+
+        .product-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            border-radius: 1rem;
+        }
+
+            .product-card:hover {
+                transform: translateY(-4px);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            }
+
+            .product-card img {
+                max-height: 180px;
+                object-fit: contain;
+                padding: 1rem;
+                background-color: #f8f9fa;
+                border-top-left-radius: 1rem;
+                border-top-right-radius: 1rem;
+            }
+
+        .card-title {
+            font-size: 1.1rem;
+        }
+
+        .card-text {
+            font-size: 0.85rem;
+            color: #6c757d;
+        }
+
+        .card-footer {
+            background-color: #fff;
+            border-top: none;
+        }
+
+        .fa-star {
+            font-size: 0.9rem;
+        }
+
+        .text-truncate {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .category-active {
+            color: #0d6efd;
+            font-weight: bold;
+        }
+    </style>
+}
+
+<section class="py-5">
+    <div class="container">
+        <h1 class="mb-4">Our Products</h1>
+
+        <div class="row">
+            <div class="col-lg-3 mb-4">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Categories</h5>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><a href="#" class="text-decoration-none category-active" data-category="all">All Products</a></li>
+                            @foreach (var category in categories)
+                            {
+                                <li class="list-group-item">
+                                    <a href="#" class="text-decoration-none" data-category="@category.Name">@category.Name</a>
+                                </li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header bg-secondary text-white">
+                        <h5 class="mb-0">Filters</h5>
+                    </div>
+                    <div class="card-body">
+                        <h6>Price Range</h6>
+                        <div class="mb-3">
+                            <input type="range" class="form-range" id="priceRange" min="0" max="50000" step="100" value="1000">
+                            <div class="d-flex justify-content-between">
+                                <span>$0</span>
+                                <span id="priceValue">$1000</span>
+                                <span>$2000</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-9">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <p class="mb-0"><span id="productCount">@Model.Count</span> products found</p>
+                    <div class="d-flex align-items-center">
+                        <label class="me-2">Sort by:</label>
+                        <select class="form-select form-select-sm" style="width: auto;" id="sortSelect">
+                            <option value="">Featured</option>
+                            <option value="priceLowToHigh">Price: Low to High</option>
+                            <option value="priceHighToLow">Price: High to Low</option>
+                            <option value="rating">Customer Rating</option>
+                            <option value="newest">Newest First</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row" id="productsContainer">
+                    @foreach (var product in Model)
+                    {
+                        <div class="col-lg-3 col-md-4 col-sm-6 mb-4 product-item"
+                             data-category="@(product.Category?.Name ?? "uncategorized")"
+                             data-price="@product.Price">
+                            <div class="card product-card shadow-sm border-0 rounded-4 h-100">
+                                <a href="/Products/Details/@product.Id"
+                                   class="text-decoration-none text-dark d-flex flex-column h-100"
+                                   style="position: relative; z-index: 1;">
+                                    <img src="@(string.IsNullOrEmpty(product.Image) ? "/images/no-image.png" : product.Image)"
+                                         class="card-img-top"
+                                         alt="@product.ProductName"
+                                         onerror="this.src='/images/no-image.png'" />
+
+                                    <div class="card-body d-flex flex-column">
+                                        <h5 class="card-title fw-semibold text-truncate">@product.ProductName</h5>
+                                        <p class="card-text">@product.Description</p>
+                                    </div>
+                                </a>
+
+                                <div class="card-footer bg-white border-top-0 d-flex justify-content-between align-items-center px-3 pb-3 pt-2"
+                                     style="position: relative; z-index: 2;">
+                                    <span class="fw-bold text-success fs-6">$@product.Price</span>
+                                    <form asp-controller="Cart" asp-action="AddToCart" method="post" class="m-0">
+                                        <input type="hidden" name="productId" value="@product.Id" />
+                                        <button type="submit" class="btn btn-sm btn-primary px-3">
+                                            <i class="fas fa-cart-plus me-1"></i> Add
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <nav class="mt-5">
+                    <ul class="pagination justify-content-center">
+                        <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click event listener to all product links
+            document.querySelectorAll('.product-card a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Prevent the default action
+                    e.preventDefault();
+                    // Log the click
+                    console.log('Product link clicked:', this.href);
+                    // Navigate to the product details page
+                    window.location.href = this.href;
+                });
+            });
+
+            const priceRange = document.getElementById("priceRange");
+            const priceValue = document.getElementById("priceValue");
+            const productsContainer = document.getElementById("productsContainer");
+            const sortSelect = document.getElementById("sortSelect");
+            const categoryLinks = document.querySelectorAll('[data-category]');
+
+            // Price range update
+            if (priceRange && priceValue) {
+                priceRange.addEventListener("input", function() {
+                    priceValue.textContent = "$" + this.value;
+                    filterProducts();
+                });
+            }
+
+            // Category filtering
+            categoryLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    categoryLinks.forEach(l => l.classList.remove('category-active'));
+                    this.classList.add('category-active');
+                    filterProducts();
+                });
+            });
+
+            // Sorting
+            sortSelect.addEventListener('change', function() {
+                const products = Array.from(document.querySelectorAll('.product-item'));
+                const sortValue = this.value;
+
+                products.sort((a, b) => {
+                    const priceA = parseFloat(a.dataset.price);
+                    const priceB = parseFloat(b.dataset.price);
+
+                    switch(sortValue) {
+                        case 'priceLowToHigh':
+                            return priceA - priceB;
+                        case 'priceHighToLow':
+                            return priceB - priceA;
+                        default:
+                            return 0;
+                    }
+                });
+
+                productsContainer.innerHTML = '';
+                products.forEach(product => productsContainer.appendChild(product));
+            });
+
+            function filterProducts() {
+                const maxPrice = parseFloat(priceRange.value);
+                const selectedCategory = document.querySelector('.category-active').dataset.category;
+
+                const products = document.querySelectorAll('.product-item');
+                let visibleCount = 0;
+
+                products.forEach(product => {
+                    const price = parseFloat(product.dataset.price);
+                    const category = product.dataset.category;
+
+                    const priceMatch = price <= maxPrice;
+                    const categoryMatch = selectedCategory === 'all' || category === selectedCategory;
+
+                    if (priceMatch && categoryMatch) {
+                        product.style.display = '';
+                        visibleCount++;
+                    } else {
+                        product.style.display = 'none';
+                    }
+                });
+
+                document.getElementById('productCount').textContent = visibleCount;
+            }
+        });
+    </script>
+}

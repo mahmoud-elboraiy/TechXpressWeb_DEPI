@@ -1,0 +1,413 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+    <style>
+        .about-hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1581094794329-c8112a89af12?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 7rem 0;
+            margin-bottom: 4rem;
+            position: relative;
+        }
+
+        .value-card {
+            transition: all 0.3s ease;
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+            height: 100%;
+        }
+
+            .value-card:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
+
+        .value-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.2rem;
+            color: #0d6efd;
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 3rem;
+        }
+
+            .timeline:before {
+                content: '';
+                position: absolute;
+                left: 0;
+                top: 6px;
+                width: 3px;
+                height: calc(100% - 6px);
+                background-color: #0d6efd;
+            }
+
+        .timeline-item {
+            position: relative;
+            padding-bottom: 1.5rem;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -2.3rem;
+            top: 0.3rem;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background-color: #0d6efd;
+        }
+
+        .team-member {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+            .team-member img {
+                width: 180px;
+                height: 180px;
+                border-radius: 50%;
+                object-fit: cover;
+                margin-bottom: 1rem;
+                border: 5px solid #f8f9fa;
+                transition: all 0.3s ease;
+            }
+
+            .team-member:hover img {
+                border-color: #0d6efd;
+                transform: scale(1.05);
+            }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            background-color: #f8f9fa;
+            border-radius: 50%;
+            color: #212529;
+            margin: 0 5px;
+            transition: all 0.3s ease;
+        }
+
+            .social-links a:hover {
+                background-color: #0d6efd;
+                color: white;
+                transform: translateY(-3px);
+            }
+
+        .testimonial {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 2rem;
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+
+            .testimonial:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            }
+
+            .testimonial img {
+                width: 80px;
+                height: 80px;
+                border-radius: 50%;
+                object-fit: cover;
+                margin-bottom: 1rem;
+            }
+
+        .quote-icon {
+            font-size: 2rem;
+            color: #0d6efd;
+            opacity: 0.3;
+        }
+
+        .counter-box {
+            text-align: center;
+            padding: 2rem;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+            .counter-box:hover {
+                background-color: #0d6efd;
+                color: white;
+            }
+
+                .counter-box:hover .counter-icon {
+                    color: white;
+                }
+
+            .counter-box .counter {
+                font-size: 3rem;
+                font-weight: 700;
+                margin-bottom: 0.5rem;
+            }
+
+        .counter-icon {
+            font-size: 3rem;
+            color: #0d6efd;
+            margin-bottom: 1rem;
+        }
+    </style>
+</head>
+<body>
+    
+
+    <!-- Hero Section -->
+    <section class="about-hero text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-4">About TechXpress</h1>
+            <p class="lead mb-5">Empowering the world with cutting-edge technology since 2010</p>
+            <a asp-controller="Contact" asp-action="Contact" class="btn btn-primary btn-lg px-5 py-3">Get In Touch</a>
+
+        </div>
+    </section>
+
+    <!-- Our Story Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" alt="Our Story" class="img-fluid rounded shadow">
+                </div>
+                <div class="col-lg-6">
+                    <div class="ps-lg-4">
+                        <h2 class="display-6 fw-bold mb-4">Our Story</h2>
+                        <p class="lead text-muted">From a small startup to a leading tech retailer</p>
+                        <p>TechXpress began in 2010 as a small online store operating from a garage in Silicon Valley. Our founder, Michael Chen, had a simple vision: make the latest technology accessible to everyone with exceptional service and competitive prices.</p>
+                        <p>Today, we're proud to serve over 1 million customers worldwide, offering everything from smartphones and laptops to smart home devices and wearable technology. Our commitment to quality, innovation, and customer satisfaction remains at the heart of everything we do.</p>
+                        <div class="timeline mt-5">
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h5>2010</h5>
+                                <p>TechXpress is founded in Silicon Valley</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h5>2015</h5>
+                                <p>Expanded to international markets with operations in Europe and Asia</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h5>2020</h5>
+                                <p>Reached 1 million customers worldwide</p>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-dot"></div>
+                                <h5>2023</h5>
+                                <p>Named "Retailer of the Year" at Tech Innovation Awards</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Values Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-6 fw-bold">Our Core Values</h2>
+                <p class="lead text-muted">The principles that guide everything we do</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="card value-card h-100 text-center p-4">
+                        <div class="card-body">
+                            <div class="value-icon">
+                                <i class="fas fa-handshake"></i>
+                            </div>
+                            <h4 class="card-title">Trust</h4>
+                            <p class="card-text">We build relationships based on transparency, reliability, and honesty with our customers and partners.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card value-card h-100 text-center p-4">
+                        <div class="card-body">
+                            <div class="value-icon">
+                                <i class="fas fa-lightbulb"></i>
+                            </div>
+                            <h4 class="card-title">Innovation</h4>
+                            <p class="card-text">We constantly seek new technologies and approaches to improve our products and services.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card value-card h-100 text-center p-4">
+                        <div class="card-body">
+                            <div class="value-icon">
+                                <i class="fas fa-gem"></i>
+                            </div>
+                            <h4 class="card-title">Quality</h4>
+                            <p class="card-text">We uphold the highest standards in product selection, ensuring only the best for our customers.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card value-card h-100 text-center p-4">
+                        <div class="card-body">
+                            <div class="value-icon">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <h4 class="card-title">Community</h4>
+                            <p class="card-text">We believe in building a community of tech enthusiasts and giving back to society.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="py-5">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="display-6 fw-bold">Meet Our Team</h2>
+                <p class="lead text-muted">The passionate people behind TechXpress</p>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-lg-3">
+                    <div class="team-member">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Team Member">
+                        <h5>Michael Chen</h5>
+                        <p class="text-muted">Founder & CEO</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="team-member">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Team Member">
+                        <h5>Sarah Johnson</h5>
+                        <p class="text-muted">CTO</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="team-member">
+                        <img src="https://randomuser.me/api/portraits/men/46.jpg" alt="Team Member">
+                        <h5>David Kim</h5>
+                        <p class="text-muted">Head of Design</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="team-member">
+                        <img src="https://randomuser.me/api/portraits/women/29.jpg" alt="Team Member">
+                        <h5>Emily Rodriguez</h5>
+                        <p class="text-muted">Customer Experience</p>
+                        <div class="social-links">
+                            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                            <a href="#"><i class="fab fa-twitter"></i></a>
+                            <a href="#"><i class="fas fa-envelope"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="counter-box">
+                        <div class="counter-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="counter">1M+</div>
+                        <p class="mb-0">Happy Customers</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="counter-box">
+                        <div class="counter-icon">
+                            <i class="fas fa-globe"></i>
+                        </div>
+                        <div class="counter">25+</div>
+                        <p class="mb-0">Countries Served</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="counter-box">
+                        <div class="counter-icon">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <div class="counter">10K+</div>
+                        <p class="mb-0">Products Available</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="counter-box">
+                        <div class="counter-icon">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <div class="counter">15+</div>
+                        <p class="mb-0">Industry Awards</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4 mt-0">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>TechXpress</h5>
+                    <p>Your trusted source for the latest electronics and gadgets.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5>Quick Links</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="home.html" class="text-white">Home</a></li>
+                        <li><a href="product.html" class="text-white">Products</a></li>
+                        <li><a href="about.html" class="text-white">About</a></li>
+                        <li><a href="contact.html" class="text-white">Contact</a></li>
+                        <li><a href="policies.html" class="text-white">Policies</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5>Contact</h5>
+                    <p><i class="fas fa-envelope me-2"></i> info@techxpress.com</p>
+                    <p><i class="fas fa-phone me-2"></i> (123) 456-7890</p>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center">
+                <p>&copy; 2023 TechXpress. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,347 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+   
+    <style>
+        .product-gallery img {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+            .product-gallery img:hover {
+                opacity: 0.8;
+            }
+
+        .thumbnail {
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+            .thumbnail.active, .thumbnail:hover {
+                border-color: #0d6efd;
+            }
+
+        .specs-list dt {
+            width: 150px;
+            font-weight: 600;
+        }
+
+        .rating {
+            color: #ffc107;
+        }
+
+        .qty-input {
+            width: 70px;
+        }
+    </style>
+</head>
+<body>
+   
+
+
+    <!-- Product Detail Section -->
+    <section class="py-4">
+        <div class="container">
+            <div class="row g-4">
+                <!-- Product Gallery -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="main-image mb-3">
+                                <img src="https://via.placeholder.com/600x400" class="img-fluid" id="mainImage" alt="Product Image">
+                            </div>
+                            <div class="row product-gallery">
+                                <div class="col-3">
+                                    <img src="https://via.placeholder.com/600x400" class="img-fluid thumbnail active" onclick="changeImage(this)" alt="Product Thumbnail 1">
+                                </div>
+                                <div class="col-3">
+                                    <img src="https://via.placeholder.com/600x400/777" class="img-fluid thumbnail" onclick="changeImage(this)" alt="Product Thumbnail 2">
+                                </div>
+                                <div class="col-3">
+                                    <img src="https://via.placeholder.com/600x400/999" class="img-fluid thumbnail" onclick="changeImage(this)" alt="Product Thumbnail 3">
+                                </div>
+                                <div class="col-3">
+                                    <img src="https://via.placeholder.com/600x400/555" class="img-fluid thumbnail" onclick="changeImage(this)" alt="Product Thumbnail 4">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Product Info -->
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h2 class="card-title mb-2">Smartphone X Pro</h2>
+                            <div class="mb-2">
+                                <span class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                </span>
+                                <span class="text-muted ms-1">(28 reviews)</span>
+                            </div>
+                            <div class="mb-3">
+                                <span class="badge bg-success">In Stock</span>
+                                <span class="badge bg-secondary">Free Shipping</span>
+                            </div>
+                            <h3 class="mb-3">$999.00</h3>
+                            <p class="mb-4">The Smartphone X Pro pushes the boundaries of what a smartphone can do. Designed for professionals and creatives, it delivers unprecedented performance and camera capabilities.</p>
+
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <label class="form-label">Color</label>
+                                    <select class="form-select">
+                                        <option selected>Midnight Black</option>
+                                        <option>Silver Gray</option>
+                                        <option>Pacific Blue</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Storage</label>
+                                    <select class="form-select">
+                                        <option selected>128GB</option>
+                                        <option>256GB</option>
+                                        <option>512GB</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="d-flex align-items-center mb-4">
+                                <div class="me-3">
+                                    <label class="form-label">Quantity</label>
+                                    <input type="number" class="form-control qty-input" value="1" min="1">
+                                </div>
+                                <div>
+                                    <button class="btn btn-primary btn-lg">
+                                        <i class="fas fa-shopping-cart me-2"></i>Add to Cart
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <button class="btn btn-outline-secondary me-2">
+                                    <i class="far fa-heart me-1"></i>Add to Wishlist
+                                </button>
+                                <button class="btn btn-outline-secondary">
+                                    <i class="fas fa-share-alt me-1"></i>Share
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Tabs -->
+            <div class="row mt-4">
+                <div class="col-12">
+                    <ul class="nav nav-tabs" id="productTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button">Description</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="specs-tab" data-bs-toggle="tab" data-bs-target="#specs" type="button">Specifications</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button">Reviews</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content p-4 border border-top-0 rounded-bottom" id="productTabsContent">
+                        <div class="tab-pane fade show active" id="description" role="tabpanel">
+                            <h4>Product Description</h4>
+                            <p>The Smartphone X Pro pushes the boundaries of what a smartphone can do. Designed for professionals and creatives, it delivers unprecedented performance and camera capabilities.</p>
+                            <p>Key Features:</p>
+                            <ul>
+                                <li>Cinematic mode for shallow depth of field and automatic focus changes</li>
+                                <li>ProRes video capture for incredible editing flexibility</li>
+                                <li>Macro photography for stunning close-ups</li>
+                                <li>Ceramic Shield front cover that's tougher than any smartphone glass</li>
+                                <li>IP68 rating for water resistance</li>
+                                <li>A15 Bionic chip with 16-core Neural Engine</li>
+                                <li>Up to 28 hours of video playback</li>
+                                <li>5G capable for superfast downloads and high-quality streaming</li>
+                            </ul>
+                        </div>
+                        <div class="tab-pane fade" id="specs" role="tabpanel">
+                            <h4>Technical Specifications</h4>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <dl class="row specs-list">
+                                        <dt class="col-sm-4">Display</dt>
+                                        <dd class="col-sm-8">6.7-inch Super Retina XDR display with ProMotion</dd>
+
+                                        <dt class="col-sm-4">Chip</dt>
+                                        <dd class="col-sm-8">A15 Bionic chip with 5-core GPU</dd>
+
+                                        <dt class="col-sm-4">Camera</dt>
+                                        <dd class="col-sm-8">Pro camera system: Telephoto, Wide, and Ultra Wide cameras</dd>
+
+                                        <dt class="col-sm-4">Front Camera</dt>
+                                        <dd class="col-sm-8">12MP TrueDepth front camera</dd>
+                                    </dl>
+                                </div>
+                                <div class="col-md-6">
+                                    <dl class="row specs-list">
+                                        <dt class="col-sm-4">Battery</dt>
+                                        <dd class="col-sm-8">Up to 28 hours video playback</dd>
+
+                                        <dt class="col-sm-4">Dimensions</dt>
+                                        <dd class="col-sm-8">160.8 x 78.1 x 7.65 mm</dd>
+
+                                        <dt class="col-sm-4">Weight</dt>
+                                        <dd class="col-sm-8">238 grams</dd>
+
+                                        <dt class="col-sm-4">OS</dt>
+                                        <dd class="col-sm-8">Latest OS with personalized features</dd>
+                                    </dl>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="reviews" role="tabpanel">
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <h4 class="mb-0">Customer Reviews</h4>
+                                <button class="btn btn-primary">Write a Review</button>
+                            </div>
+
+                            <!-- Review Summary -->
+                            <div class="row mb-4">
+                                <div class="col-md-4">
+                                    <div class="text-center">
+                                        <h2 class="mb-0">4.5</h2>
+                                        <div class="rating mb-2">
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star"></i>
+                                            <i class="fas fa-star-half-alt"></i>
+                                        </div>
+                                        <p class="text-muted">Based on 28 reviews</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="mb-2">
+                                        <div class="d-flex align-items-center">
+                                            <div class="text-nowrap me-3">5 <i class="fas fa-star text-muted"></i></div>
+                                            <div class="progress flex-grow-1">
+                                                <div class="progress-bar bg-success" style="width: 75%"></div>
+                                            </div>
+                                            <div class="ms-3 text-nowrap">75%</div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <div class="d-flex align-items-center">
+                                            <div class="text-nowrap me-3">4 <i class="fas fa-star text-muted"></i></div>
+                                            <div class="progress flex-grow-1">
+                                                <div class="progress-bar bg-success" style="width: 15%"></div>
+                                            </div>
+                                            <div class="ms-3 text-nowrap">15%</div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <div class="d-flex align-items-center">
+                                            <div class="text-nowrap me-3">3 <i class="fas fa-star text-muted"></i></div>
+                                            <div class="progress flex-grow-1">
+                                                <div class="progress-bar bg-warning" style="width: 7%"></div>
+                                            </div>
+                                            <div class="ms-3 text-nowrap">7%</div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <div class="d-flex align-items-center">
+                                            <div class="text-nowrap me-3">2 <i class="fas fa-star text-muted"></i></div>
+                                            <div class="progress flex-grow-1">
+                                                <div class="progress-bar bg-danger" style="width: 2%"></div>
+                                            </div>
+                                            <div class="ms-3 text-nowrap">2%</div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-2">
+                                        <div class="d-flex align-items-center">
+                                            <div class="text-nowrap me-3">1 <i class="fas fa-star text-muted"></i></div>
+                                            <div class="progress flex-grow-1">
+                                                <div class="progress-bar bg-danger" style="width: 1%"></div>
+                                            </div>
+                                            <div class="ms-3 text-nowrap">1%</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Individual Reviews -->
+                            <div class="mb-4 p-4 border rounded">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <h5 class="mb-0">Amazing phone!</h5>
+                                    <div class="rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </div>
+                                <p class="text-muted">By John D. on October 15, 2023</p>
+                                <p>The camera system is truly professional quality. I've been able to take photos that rival my DSLR. The battery life is excellent too, lasting me almost two days with moderate use.</p>
+                            </div>
+
+                            <div class="mb-4 p-4 border rounded">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <h5 class="mb-0">Great but heavy</h5>
+                                    <div class="rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="far fa-star"></i>
+                                    </div>
+                                </div>
+                                <p class="text-muted">By Sarah K. on October 10, 2023</p>
+                                <p>Love the performance and display, but it's noticeably heavier than my previous phone. The ProMotion display is stunning though, and scrolling is incredibly smooth.</p>
+                            </div>
+
+                            <div class="mb-4 p-4 border rounded">
+                                <div class="d-flex justify-content-between mb-2">
+                                    <h5 class="mb-0">Worth every penny</h5>
+                                    <div class="rating">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </div>
+                                </div>
+                                <p class="text-muted">By Michael T. on October 5, 2023</p>
+                                <p>This is the best phone I've ever owned. The speed is incredible, and the camera system lets me leave my dedicated camera at home for most situations. The night mode photos are particularly impressive.</p>
+                            </div>
+
+                            <div class="d-grid">
+                                <button class="btn btn-outline-primary">Load More Reviews</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+       
+        </div>
+    </section>
+
+  
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Change main product image when thumbnail is clicked
+        function changeImage(element) {
+            document.getElementById('mainImage').src = element.src;
+
+            // Update active class on thumbnails
+            let thumbnails = document.querySelectorAll('.thumbnail');
+            thumbnails.forEach(thumb => {
+                thumb.classList.remove('active');
+            });
+            element.classList.add('active');
+        }
+    </script>
+</body>
+</html>
