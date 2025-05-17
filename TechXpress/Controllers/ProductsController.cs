@@ -74,11 +74,17 @@ namespace TechXpress.Controllers
         //products/search?name=phone
         public async Task<IActionResult> Search(string query)
         {
-            List<Product> products = _context.Products
-                .Include(c=>c.Category)
-                .Where(p => p.ProductName.Contains(query.ToLower())).ToList();
+            if (string.IsNullOrWhiteSpace(query))
+            {
+                return View("viewProducts", new List<Product>());
+            }
 
-            return View("viewProducts",products);
+            var products = await _context.Products
+                .Include(p => p.Category)
+                .Where(p => p.ProductName.ToLower().Contains(query.ToLower()))
+                .ToListAsync();
+
+            return View("viewProducts", products);
         }
     }
 }

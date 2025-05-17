@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
+using DAL.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TechXpress.Controllers
 {
@@ -331,5 +333,54 @@ namespace TechXpress.Controllers
 
             return View("ProductView", products);
         }
+
+        //Dashboard/GetAllOrderDetails
+        [HttpGet]
+
+            public async Task<ActionResult<IEnumerable<OrderDetailsDto>>> GetAllOrderDetails()
+            {
+                var orders = await _context.Orders
+                         .Include(o => o.User)
+                         .Include(o => o.OrderItems)
+                             .ThenInclude(oi => oi.Product)
+                         .Include(o => o.Payment)
+                             .ThenInclude(p => p.Method)
+                         .Include(o => o.Shipping)
+                         .ToListAsync();
+                var orderDtos = orders.Select(o => new OrderDetailsDto
+                {
+                    Id = o.Id,
+                    UserId = o.UserId,
+                    UserFullName = $"{o.User.FirstName} {o.User.LastName}",
+                    UserEmail = o.User.Email,
+                    UserAddress = o.User.Address,
+                    OrderDate = o.OrderDate,
+                    TotalAmount = o.TotalAmount,
+                    Status = o.Status,
+                    OrderItems = o.OrderItems.Select(oi => new OrderItemDto
+                    {
+                        ProductId = oi.ProductId,
+                        ProductName = oi.Product.ProductName,
+                        Price = oi.Price,
+                        Quantity = oi.Quantity,
+                        TotalItemsPrice = oi.TotalItemsPrice
+                    }).ToList(),
+                    Payment = o.Payment == null ? null : new PaymentDto
+                    {
+                        PaymentMethodName = o.Payment.Method?.Name,
+                        Amount = o.Payment.Amount,
+                        TransactionDate = o.Payment.TransactionDate
+                    },
+                    Shipping = o.Shipping == null ? null : new ShippingDto
+                    {
+                        ShippingState = o.Shipping.ShippingState,
+                        TrackingNumber = o.Shipping.TrackingNumber,
+                        EstimatedDeliveryDate = o.Shipping.EstimatedDeliveryDate,
+                        ActualDeliveryDate = o.Shipping.ActualDeliveryDate
+                    }
+                }).ToList();
+
+                return View(orderDtos);
+            }
     }
 }

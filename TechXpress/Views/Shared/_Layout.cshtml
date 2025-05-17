@@ -1,4 +1,4 @@
-﻿ @using DAL.Models
+﻿@using DAL.Models
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
@@ -28,9 +28,9 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="search-container mx-auto">
-                <form class="d-flex" id="searchForm">
+                <form class="d-flex" id="searchForm" asp-controller="Products" asp-action="Search" method="get">
                     <div class="input-group">
-                        <input class="form-control" type="search" id="searchInput" placeholder="Search products..." aria-label="Search">
+                        <input class="form-control" type="search" id="searchInput" name="query" placeholder="Search products..." aria-label="Search">
                         <button class="btn btn-outline-light btn-search" type="submit">
                             <i class="fas fa-search"></i>
                         </button>

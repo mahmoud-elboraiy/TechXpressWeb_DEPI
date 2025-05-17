@@ -1,0 +1,46 @@
+﻿@using DAL.ViewModels
+@model IEnumerable<OrderDetailsDto>
+
+@{
+    ViewData["Title"] = "All Orders";
+}
+
+<h3>Recent Orders</h3>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Total</th>
+            <th>Payment</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>#ORD-@order.Id</td>
+                <td>@order.UserFullName</td>
+                <td>@order.OrderDate.ToString("MMM d, yyyy")</td>
+                <td>
+                    @{
+                        var status = order.Status;
+                        var badgeClass = status switch
+                        {
+                            "Reached" => "badge bg-success",
+                            "Shipped" => "badge bg-primary",
+                            "Processing" => "badge bg-warning text-dark",
+                            _ => "badge bg-secondary"
+                        };
+                    }
+                    <span class="@badgeClass">@status</span>
+                </td>
+                <td>$@order.TotalAmount</td>
+                <td>@order.Payment?.PaymentMethodName</td>
+            </tr>
+        }
+    </tbody>
+</table>
