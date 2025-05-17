@@ -1,0 +1,85 @@
+@model DAL.Models.StoreSettings
+@{
+    ViewData["Title"] = "Store Settings";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-lg-2 col-md-3 p-0 bg-light sidebar">
+            <div class="list-group list-group-flush">
+                <a asp-controller="Dashboard" asp-action="AdminDash" class="list-group-item list-group-item-action">
+                    <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                </a>
+                <a asp-controller="Dashboard" asp-action="ManageProduct" class="list-group-item list-group-item-action">
+                    <i class="fas fa-box me-2"></i> Products
+                </a>
+                <a asp-controller="Dashboard" asp-action="ManageCategories" class="list-group-item list-group-item-action">
+                    <i class="fas fa-tags me-2"></i> Categories
+                </a>
+                <a asp-controller="Dashboard" asp-action="ManageClients" class="list-group-item list-group-item-action">
+                    <i class="fas fa-users me-2"></i> Clients
+                </a>
+                <a asp-controller="Dashboard" asp-action="GetAllOrderDetails" class="list-group-item list-group-item-action">
+                    <i class="fas fa-shopping-cart me-2"></i> Orders
+                </a>
+                <a asp-controller="Dashboard" asp-action="Settings" class="list-group-item list-group-item-action active">
+                    <i class="fas fa-cog me-2"></i> Settings
+                </a>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-lg-10 col-md-9 admin-content">
+            <h2 class="mb-4">Store Settings</h2>
+
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    @TempData["SuccessMessage"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            }
+
+            <div class="card">
+                <div class="card-body">
+                    <form asp-action="UpdateSettings" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                        <div class="mb-3">
+                            <label asp-for="StoreName" class="form-label">Store Name</label>
+                            <input asp-for="StoreName" class="form-control" />
+                            <span asp-validation-for="StoreName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="StoreEmail" class="form-label">Store Email</label>
+                            <input asp-for="StoreEmail" class="form-control" type="email" />
+                            <span asp-validation-for="StoreEmail" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="StorePhone" class="form-label">Store Phone</label>
+                            <input asp-for="StorePhone" class="form-control" />
+                            <span asp-validation-for="StorePhone" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="StoreAddress" class="form-label">Store Address</label>
+                            <textarea asp-for="StoreAddress" class="form-control" rows="3"></textarea>
+                            <span asp-validation-for="StoreAddress" class="text-danger"></span>
+                        </div>
+
+                        <div class="text-end">
+                            <button type="submit" class="btn btn-primary">Save Settings</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+} 
