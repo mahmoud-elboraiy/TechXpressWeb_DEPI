@@ -16,7 +16,7 @@ Welcome to the Software Requirements Specification (SRS) for **TechXpress** — 
 - 📦 Returns processing
 - 🧾 Invoicing & sales
 - 📊 Reporting & analytics
-- 🔐 Data protection
+- 🔐 Data  protection
 
 ---
 
