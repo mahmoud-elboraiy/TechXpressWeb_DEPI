@@ -21,6 +21,7 @@ namespace DAL
         public DbSet<Payment> Payments { get; set; }
         public DbSet<PaymentMethod> PaymentMethods { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<StoreSettings> StoreSettings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -96,6 +97,10 @@ namespace DAL
                 .WithMany(p => p.Reviews)
                 .HasForeignKey(r => r.ProductId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Configure StoreSettings
+            builder.Entity<StoreSettings>()
+                .HasKey(s => s.Id);
         }
     }
 

@@ -10,23 +10,84 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 using DAL.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 
 namespace TechXpress.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class DashboardController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly ILogger<DashboardController> _logger;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public DashboardController(ApplicationDbContext context, ILogger<DashboardController> logger)
+        public DashboardController(ApplicationDbContext context, ILogger<DashboardController> logger, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _logger = logger;
+            _userManager = userManager;
         }
 
-        public IActionResult AdminDash()
+        public async Task<IActionResult> AdminDash()
         {
-            return View();
+            try
+            {
+                // Get counts for dashboard cards
+                var productCount = await _context.Products.CountAsync();
+                var clientCount = await _context.Users.CountAsync();
+                var orderCount = await _context.Orders.CountAsync();
+                var totalRevenue = await _context.Orders.SumAsync(o => o.TotalAmount);
+
+                // Get recent orders
+                var recentOrders = await _context.Orders
+                    .Include(o => o.User)
+                    .OrderByDescending(o => o.OrderDate)
+                    .Take(5)
+                    .Select(o => new
+                    {
+                        o.Id,
+                        CustomerName = o.User.FirstName + " " + o.User.LastName,
+                        o.OrderDate,
+                        o.Status,
+                        o.TotalAmount
+                    })
+                    .ToListAsync();
+
+                // Get top selling products
+                var topProducts = await _context.OrderItems
+                    .Include(oi => oi.Product)
+                    .ThenInclude(p => p.Category)
+                    .GroupBy(oi => new { oi.ProductId, oi.Product.ProductName, oi.Product.Category.Name })
+                    .Select(g => new
+                    {
+                        ProductName = g.Key.ProductName,
+                        Category = g.Key.Name,
+                        Sales = g.Sum(oi => oi.Quantity),
+                        Revenue = g.Sum(oi => oi.Quantity * oi.Price)
+                    })
+                    .OrderByDescending(x => x.Sales)
+                    .Take(5)
+                    .ToListAsync();
+
+                ViewBag.ProductCount = productCount;
+                ViewBag.ClientCount = clientCount;
+                ViewBag.OrderCount = orderCount;
+                ViewBag.TotalRevenue = totalRevenue.ToString("C");
+                ViewBag.RecentOrders = recentOrders;
+                ViewBag.TopProducts = topProducts;
+
+                return View();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error loading dashboard data");
+                return View();
+            }
+        }
+
+        public IActionResult ManageClients()
+        {
+            return RedirectToAction("Index", "ClientManagement");
         }
 
         public async Task<IActionResult> ManageProduct()
@@ -336,51 +397,125 @@ namespace TechXpress.Controllers
 
         //Dashboard/GetAllOrderDetails
         [HttpGet]
-
-            public async Task<ActionResult<IEnumerable<OrderDetailsDto>>> GetAllOrderDetails()
+        public async Task<ActionResult<IEnumerable<OrderDetailsDto>>> GetAllOrderDetails()
+        {
+            var orders = await _context.Orders
+                     .Include(o => o.User)
+                     .Include(o => o.OrderItems)
+                         .ThenInclude(oi => oi.Product)
+                     .Include(o => o.Payment)
+                         .ThenInclude(p => p.Method)
+                     .Include(o => o.Shipping)
+                     .ToListAsync();
+            var orderDtos = orders.Select(o => new OrderDetailsDto
             {
-                var orders = await _context.Orders
-                         .Include(o => o.User)
-                         .Include(o => o.OrderItems)
-                             .ThenInclude(oi => oi.Product)
-                         .Include(o => o.Payment)
-                             .ThenInclude(p => p.Method)
-                         .Include(o => o.Shipping)
-                         .ToListAsync();
-                var orderDtos = orders.Select(o => new OrderDetailsDto
+                Id = o.Id,
+                UserId = o.UserId,
+                UserFullName = $"{o.User.FirstName} {o.User.LastName}",
+                UserEmail = o.User.Email,
+                UserAddress = o.User.Address,
+                OrderDate = o.OrderDate,
+                TotalAmount = o.TotalAmount,
+                Status = o.Status,
+                OrderItems = o.OrderItems.Select(oi => new OrderItemDto
                 {
-                    Id = o.Id,
-                    UserId = o.UserId,
-                    UserFullName = $"{o.User.FirstName} {o.User.LastName}",
-                    UserEmail = o.User.Email,
-                    UserAddress = o.User.Address,
-                    OrderDate = o.OrderDate,
-                    TotalAmount = o.TotalAmount,
-                    Status = o.Status,
-                    OrderItems = o.OrderItems.Select(oi => new OrderItemDto
-                    {
-                        ProductId = oi.ProductId,
-                        ProductName = oi.Product.ProductName,
-                        Price = oi.Price,
-                        Quantity = oi.Quantity,
-                        TotalItemsPrice = oi.TotalItemsPrice
-                    }).ToList(),
-                    Payment = o.Payment == null ? null : new PaymentDto
-                    {
-                        PaymentMethodName = o.Payment.Method?.Name,
-                        Amount = o.Payment.Amount,
-                        TransactionDate = o.Payment.TransactionDate
-                    },
-                    Shipping = o.Shipping == null ? null : new ShippingDto
-                    {
-                        ShippingState = o.Shipping.ShippingState,
-                        TrackingNumber = o.Shipping.TrackingNumber,
-                        EstimatedDeliveryDate = o.Shipping.EstimatedDeliveryDate,
-                        ActualDeliveryDate = o.Shipping.ActualDeliveryDate
-                    }
-                }).ToList();
+                    ProductId = oi.ProductId,
+                    ProductName = oi.Product.ProductName,
+                    Price = oi.Price,
+                    Quantity = oi.Quantity,
+                    TotalItemsPrice = oi.TotalItemsPrice
+                }).ToList(),
+                Payment = o.Payment == null ? null : new PaymentDto
+                {
+                    PaymentMethodName = o.Payment.Method?.Name,
+                    Amount = o.Payment.Amount,
+                    TransactionDate = o.Payment.TransactionDate
+                },
+                Shipping = o.Shipping == null ? null : new ShippingDto
+                {
+                    ShippingState = o.Shipping.ShippingState,
+                    TrackingNumber = o.Shipping.TrackingNumber,
+                    EstimatedDeliveryDate = o.Shipping.EstimatedDeliveryDate,
+                    ActualDeliveryDate = o.Shipping.ActualDeliveryDate
+                }
+            }).ToList();
 
-                return View(orderDtos);
+            return View(orderDtos);
+        }
+
+        // Settings Management Actions
+        public async Task<IActionResult> Settings()
+        {
+            var settings = await _context.StoreSettings.FirstOrDefaultAsync();
+            if (settings == null)
+            {
+                settings = new StoreSettings
+                {
+                    StoreName = "TechXpress",
+                    StoreEmail = "info@techxpress.com",
+                    StorePhone = "+1 (555) 123-4567",
+                    StoreAddress = "123 Tech Street, Silicon Valley, CA 94043, USA"
+                };
+                _context.StoreSettings.Add(settings);
+                await _context.SaveChangesAsync();
             }
+            return View(settings);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateSettings(StoreSettings model)
+        {
+            if (ModelState.IsValid)
+            {
+                var settings = await _context.StoreSettings.FirstOrDefaultAsync();
+                if (settings == null)
+                {
+                    _context.StoreSettings.Add(model);
+                }
+                else
+                {
+                    settings.StoreName = model.StoreName;
+                    settings.StoreEmail = model.StoreEmail;
+                    settings.StorePhone = model.StorePhone;
+                    settings.StoreAddress = model.StoreAddress;
+                }
+
+                await _context.SaveChangesAsync();
+                TempData["SuccessMessage"] = "Settings updated successfully.";
+                return RedirectToAction(nameof(Settings));
+            }
+
+            return View("Settings", model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> UpdateUserStatus(string userId, string status, string reason, DateTime? suspensionEndDate)
+        {
+            try
+            {
+                var user = await _userManager.FindByIdAsync(userId);
+                if (user == null)
+                {
+                    return Json(new { success = false, message = "User not found." });
+                }
+
+                user.AccountStatus = status;
+                user.SuspensionReason = reason;
+                user.SuspensionEndDate = suspensionEndDate;
+
+                var result = await _userManager.UpdateAsync(user);
+                if (result.Succeeded)
+                {
+                    return Json(new { success = true, message = "User status updated successfully." });
+                }
+
+                return Json(new { success = false, message = "Failed to update user status." });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while updating user status." });
+            }
+        }
     }
 }
