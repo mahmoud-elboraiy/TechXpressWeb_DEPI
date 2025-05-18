@@ -25,4 +25,4 @@ namespace DAL.Models
         [StringLength(200)]
         public string StoreAddress { get; set; } = "123 Tech Street, Silicon Valley, CA 94043, USA";
     }
-} 
+} // dasfasdfsdf
