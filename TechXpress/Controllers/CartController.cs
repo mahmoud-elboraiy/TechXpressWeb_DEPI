@@ -14,9 +14,9 @@ namespace TechXpress.Controllers
         }
         public IActionResult Cart()
         {
-            int  CartId = 2;
+           // int  CartId = 2;
             var cartItems = _db.CartItems
-                .Where(c => c.CartId == CartId)
+                //.Where(c => c.CartId == CartId)
                 .Include(c => c.Product)
                 .ThenInclude(p => p.Category)
                 .ToList();
@@ -29,7 +29,7 @@ namespace TechXpress.Controllers
           var product =_db.Products.FirstOrDefault(p=>p.Id == productId);
             if (product == null)
             {
-                return View("Products", "viewProducts");
+                return RedirectToAction( "viewProducts","Products");
             }
             var cartItem = new CartItem
             {
@@ -42,6 +42,17 @@ namespace TechXpress.Controllers
             // Add the cart item to the database
             _db.CartItems.Add(cartItem);
             _db.SaveChanges();
+            return RedirectToAction("Cart");
+        }
+        [HttpPost]
+        public IActionResult RemoveFromCart(int cartItemId)
+        {
+            var cartItem = _db.CartItems.FirstOrDefault(ci => ci.Id == cartItemId);
+            if (cartItem != null)
+            {
+                _db.CartItems.Remove(cartItem);
+                _db.SaveChanges();
+            }
             return RedirectToAction("Cart");
         }
 

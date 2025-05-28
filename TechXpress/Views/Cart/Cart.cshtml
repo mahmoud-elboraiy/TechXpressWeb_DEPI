@@ -42,8 +42,15 @@
                                     </div>
                                 </div>
                                 <div class="col-md-2 text-end">
-                                    <h5 class="mb-0 item-price" data-unit-price="@item.Product.Price">$@(item.Product.Price * item.Quantity)</h5>
-                                    <button class="btn btn-link text-danger p-0"><small>Remove</small></button>
+                                    <h5 class="mb-0 item-price" data-unit-price="@item.Product.Price">
+                                        $@(item.Product.Price * item.Quantity)
+                                    </h5>
+                                    <form asp-controller="Cart" asp-action="RemoveFromCart" method="post" style="display:inline;">
+                                        <input type="hidden" name="cartItemId" value="@item.Id" />
+                                        <button type="submit" class="btn btn-link text-danger p-0">
+                                            <small>Remove</small>
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         }

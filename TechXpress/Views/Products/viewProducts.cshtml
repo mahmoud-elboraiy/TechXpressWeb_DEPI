@@ -373,7 +373,8 @@
                                             <button type="submit" class="btn btn-sm btn-primary px-3">
                                                 <i class="fas fa-cart-plus me-1"></i> Add
                                             </button>
-                                        </form>
+                                        </form> 
+
                                     </div>
                                 </div>
                             </div>
@@ -398,17 +399,17 @@
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Add click event listener to all product links
-            // document.querySelectorAll('.product-card a').forEach(link => {
-            //     link.addEventListener('click', function(e) {
-            //         // Prevent the default action
-            //         e.preventDefault();
-            //         // Log the click
-            //         console.log('Product link clicked:', this.href);
-            //         // Navigate to the product details page
-            //         window.location.href = this.href;
-            //     });
-            // });
+            Add click event listener to all product links
+            document.querySelectorAll('.product-card a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Prevent the default action
+                    e.preventDefault();
+                    // Log the click
+                    console.log('Product link clicked:', this.href);
+                    // Navigate to the product details page
+                    window.location.href = this.href;
+                });
+            });
                     document.querySelectorAll('.product-card a').forEach(link => {
                      link.addEventListener('click', function() {
                      console.log('Product link clicked:', this.href);
